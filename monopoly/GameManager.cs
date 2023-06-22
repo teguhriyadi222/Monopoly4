@@ -3,7 +3,6 @@
 namespace monopoly;
 
 public delegate void MenuActionDelegate();
-
 public class MenuOption
 {
     public string Title { get; set; }
@@ -14,7 +13,7 @@ public class MenuOption
 public class Game
 {
     private bool turnEnd;
-    private bool gameEnd;
+    // private bool gameEnd;
     private GameController gameController;
     private Player activePlayer;
     private List<MenuOption> menuOptions;
@@ -64,13 +63,13 @@ public class Game
         gameController.AddDice(6);
         gameController.AddDice(6);
         turnEnd = false;
-        gameEnd = false;
+        // gameEnd = false;
 
     }
 
     public async Task StartGame()
     {
-
+        Console.Clear();
         Console.WriteLine("=================WELCOME TO MOOPOLY GAME=======================");
         Console.Write("Enter the number of players: ");
 
@@ -109,7 +108,7 @@ public class Game
         Console.WriteLine("Press enter to start the game");
         menuOptions = GetMenuOptions();
         Console.Clear();
-        while (!gameEnd)
+        while (gameController.GetGameStatus() != true)
         {
             Player activePlayer = gameController.GetActivePlayer();
             Console.WriteLine("Player's Turn: " + activePlayer.GetName());
@@ -146,9 +145,10 @@ public class Game
                 gameController.Move();
                 Console.ReadKey();
             }
-
+            Console.Clear();
             Console.WriteLine("your position :" + gameController.GetPlayerPosition());
             Console.WriteLine("name : " + gameController.GetSquareName());
+            Console.ReadKey();
 
             while (!turnEnd)
             {
@@ -208,13 +208,25 @@ public class Game
 
     private void ShowDashboard()
     {
+        Console.Clear();
         List<Property> playerProperties = gameController.GetPlayerProperties();
         Console.WriteLine("your position :" + gameController.GetPlayerPosition());
         Console.WriteLine("your Money :" + gameController.GetPlayerMoney());
-        foreach (var property in playerProperties)
+        Console.WriteLine("Your properties are: ");
+        if (playerProperties.Count > 0)
         {
-            Console.WriteLine($"- {property.GetName()}");
+            foreach (var property in playerProperties)
+            {
+
+                Console.WriteLine($"- {property.GetName()}");
+
+            }
         }
+        else
+        {
+            Console.WriteLine("You don't have any properties.");
+        }
+    Console.ReadKey();
     }
 
     private void PurchaseProperty()
@@ -228,14 +240,55 @@ public class Game
         {
             Console.WriteLine("Failed to purchase property");
         }
+        Console.ReadKey();
     }
+
+    private void BuyHouse()
+    {
+        bool buyHouse = gameController.BuyHouse();
+        if (buyHouse)
+        {
+            Console.WriteLine("House successfully purchased");
+        }
+        else
+        {
+            Console.WriteLine("Failed to purchase house");
+        }
+    }
+
+    private void BuyHotel()
+    {
+        bool buyHotel = gameController.BuyHotel();
+        if(buyHotel)
+        {
+             Console.WriteLine("Hotel successfully purchased");
+
+        }
+        else
+        {
+            Console.WriteLine("Failed to purchase Hotel");
+        }
+    }
+
+    private void SellProperty()
+    {
+        bool sellProperty = gameController.SellProperty();
+
+        if (sellProperty)
+        {
+             Console.WriteLine("successful sale of property");
+        }
+        else
+        {
+             Console.WriteLine("failed sale of property");
+        }
+    }
+
 
     private void QuitGame()
     {
-        gameEnd = true;
+        gameController.SetGameStatus(true);
     }
-
-
 }
 
 class Program

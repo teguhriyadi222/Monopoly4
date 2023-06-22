@@ -1,9 +1,11 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "monopoly", "monopoly", "{B3395434-9C8C-44A2-BAF0-46D4FADCD958}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monopoly", "monopoly\monopoly.csproj", "{FB7ECBD8-D15B-4CEE-85F5-5236FAEDEF96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "monopoly.test", "monopoly.test\monopoly.test.csproj", "{95501210-6448-4E65-84D9-4FA551A07BFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB7ECBD8-D15B-4CEE-85F5-5236FAEDEF96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB7ECBD8-D15B-4CEE-85F5-5236FAEDEF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB7ECBD8-D15B-4CEE-85F5-5236FAEDEF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB7ECBD8-D15B-4CEE-85F5-5236FAEDEF96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95501210-6448-4E65-84D9-4FA551A07BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95501210-6448-4E65-84D9-4FA551A07BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95501210-6448-4E65-84D9-4FA551A07BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95501210-6448-4E65-84D9-4FA551A07BFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

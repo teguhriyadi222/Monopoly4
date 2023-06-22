@@ -14,6 +14,7 @@ namespace monopoly
         private Dictionary<Player, List<Property>> _playerProperties;
         private Dictionary<Player, bool> _jailStatus;
         private int _currentPlayer;
+        private bool _gameStatus;
         public event Action<Player> GoToJailEvent;
 
         public GameController(IBoard board)
@@ -26,6 +27,7 @@ namespace monopoly
             _playerProperties = new Dictionary<Player, List<Property>>();
             _results = new List<int>();
             _currentPlayer = 0;
+            _gameStatus = false;
             _jailStatus = new Dictionary<Player, bool>();
         }
 
@@ -40,13 +42,14 @@ namespace monopoly
             return true;
         }
 
-        public void AddDice(int x)
+        public bool AddDice(int x)
         {
             Dice dice = new Dice(x);
             _dices.Add(dice);
+            return true;
         }
 
-        public void Roll()
+        public bool Roll()
         {
             _results.Clear();
             int result = 0;
@@ -55,6 +58,7 @@ namespace monopoly
                 result = dice.Roll();
                 _results.Add(result);
             }
+            return true;
         }
 
         public int TotalResult()
@@ -232,6 +236,107 @@ namespace monopoly
             return false;
         }
 
+        public bool SellProperty()
+        {
+            Player activePlayer = GetActivePlayer();
+            int currentPosition = GetPlayerPosition();
+            Square currentSquare = _board.GetSquare(currentPosition);
+            Property property = currentSquare as Property;
+            if (_playerProperties.ContainsKey(activePlayer))
+            {
+                List<Property> properties = _playerProperties[activePlayer];
+                if (properties.Contains(property) && property.GetOwner() == activePlayer.GetName())
+                {
+                    int propertyPrice = property.GetPrice();
+
+                    if (_playerMoney.ContainsKey(activePlayer))
+                    {
+                        _playerMoney[activePlayer] += propertyPrice;
+                        properties.Remove(property);
+                        property.SetOwner(null);
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+
+        public bool BuyHouse()
+        {
+            Player activePlayer = GetActivePlayer();
+            int currentPosition = GetPlayerPosition();
+            Square currentSquare = _board.GetSquare(currentPosition);
+            Property property = currentSquare as Property;
+
+            if (property.GetPropertySituation() != PropertySituation.Owned || property.GetOwner() != activePlayer.GetName())
+            {
+                return false;
+            }
+
+            if (property.GetPropertyType() != TypeProperty.Residential)
+            {
+                return false;
+            }
+
+            int housePrice = property.GetHousePrice();
+            int maxHouses = 4;
+
+            if (property.GetNumberOfHouses() >= maxHouses)
+            {
+                return false;
+            }
+
+            if (_playerMoney.ContainsKey(activePlayer) && _playerMoney[activePlayer] >= housePrice)
+            {
+                _playerMoney[activePlayer] -= housePrice;
+                property.AddHouse();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
+        public bool BuyHotel()
+        {
+            Player activePlayer = GetActivePlayer();
+            int currentPosition = GetPlayerPosition();
+            Square currentSquare = _board.GetSquare(currentPosition);
+            Property property = currentSquare as Property;
+
+            if (property.GetPropertySituation() != PropertySituation.Owned || property.GetOwner() != activePlayer.GetName())
+            {
+                return false;
+            }
+
+            if (property.GetPropertyType() != TypeProperty.Residential)
+            {
+                return false;
+            }
+
+            int hotelPrice = property.GetHotelPrice();
+
+            if (_playerMoney.ContainsKey(activePlayer) && _playerMoney[activePlayer] >= hotelPrice)
+            {
+                _playerMoney[activePlayer] -= hotelPrice;
+                property.AddHotel();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
         public void HandleSquareAction(Square square)
         {
@@ -378,8 +483,21 @@ namespace monopoly
             if (IsCurrentPlayerBankrupt())
             {
                 EndGame();
+                SetGameStatus(true);
             }
         }
+
+        public bool GetGameStatus()
+        {
+            return _gameStatus;
+        }
+
+        public void SetGameStatus(bool status)
+        {
+            _gameStatus = status;
+        }
+
+
 
 
 
