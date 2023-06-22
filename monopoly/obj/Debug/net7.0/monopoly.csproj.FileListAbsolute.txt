@@ -13,3 +13,18 @@ C:\Users\Batch 2\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\refint\monopoly.dl
 C:\Users\Batch 2\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.pdb
 C:\Users\Batch 2\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.genruntimeconfig.cache
 C:\Users\Batch 2\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\ref\monopoly.dll
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\bin\Debug\net7.0\monopoly.exe
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\bin\Debug\net7.0\monopoly.deps.json
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\bin\Debug\net7.0\monopoly.runtimeconfig.json
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\bin\Debug\net7.0\monopoly.dll
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\bin\Debug\net7.0\monopoly.pdb
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.csproj.AssemblyReference.cache
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.AssemblyInfoInputs.cache
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.AssemblyInfo.cs
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.dll
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\refint\monopoly.dll
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.pdb
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\monopoly.genruntimeconfig.cache
+C:\Users\ASUS\Pictures\Monopoly4\monopoly\obj\Debug\net7.0\ref\monopoly.dll
