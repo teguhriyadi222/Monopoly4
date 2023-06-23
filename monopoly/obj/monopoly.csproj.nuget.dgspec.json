@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {}
+    "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {
+    "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
+        "projectUniqueName": "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
         "projectName": "monopoly",
-        "projectPath": "C:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
+        "projectPath": "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
         "packagesPath": "C:\\Users\\Batch 2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\obj\\",
+        "outputPath": "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

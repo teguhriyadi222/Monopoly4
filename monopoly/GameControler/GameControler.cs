@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace monopoly
 {
     public class GameController
@@ -36,7 +37,7 @@ namespace monopoly
 
             Player player = new Player(name);
             _players.Add(player);
-            _playerMoney[player] = 20000;
+            _playerMoney[player] = 20000; //setmoney
             _playerPositions[player] = _board.GetSquare(0);
             _jailStatus[player] = false;
             return true;
@@ -45,7 +46,7 @@ namespace monopoly
         public bool AddDice(int x)
         {
             Dice dice = new Dice(x);
-            _dices.Add(dice);
+            _dices.Add(dice);///
             return true;
         }
 
@@ -188,7 +189,7 @@ namespace monopoly
 
 
 
-        public bool BuyProperty()
+        public BuyPropertyError BuyProperty()
         {
             Player activePlayer = GetActivePlayer();
             int currentPosition = GetPlayerPosition();
@@ -199,7 +200,7 @@ namespace monopoly
 
                 if (!(currentSquare is Property property) || property.GetOwner() != null)
                 {
-                    return false;
+                    return BuyPropertyError.PropertyOwned;
                 }
 
                 int startPosition = _board.GetSquare(0).GetPosition();
@@ -209,7 +210,7 @@ namespace monopoly
                 int stepsPassed = (currentPosition - startPosition + totalSteps) % numSquares;
                 if (stepsPassed <= totalSteps)
                 {
-                    return false;
+                    return BuyPropertyError.PropertyOwned;
                 }
 
                 int propertyPrice = property.GetPrice();
@@ -225,15 +226,14 @@ namespace monopoly
                     }
                     _playerProperties[activePlayer].Add(property);
 
-                    return true;
                 }
                 else
                 {
-                    return false;
+                    return BuyPropertyError.InsufficientFunds;
                 }
             }
 
-            return false;
+            return BuyPropertyError.Succes;
         }
 
         public bool SellProperty()
@@ -266,7 +266,7 @@ namespace monopoly
         }
 
 
-        public bool BuyHouse()
+        public bool BuyHouse()//retunnya enum
         {
             Player activePlayer = GetActivePlayer();
             int currentPosition = GetPlayerPosition();

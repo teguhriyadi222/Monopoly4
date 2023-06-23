@@ -9,7 +9,6 @@ public class MenuOption
     public MenuActionDelegate Action { get; set; }
 }
 
-
 public class Game
 {
     private bool turnEnd;
@@ -231,16 +230,17 @@ public class Game
 
     private void PurchaseProperty()
     {
-        bool propertyBought = gameController.BuyProperty();
-        if (propertyBought)
+        BuyPropertyError error = gameController.BuyProperty();
+        switch(error)
         {
-            Console.WriteLine("Property successfully purchased");
+            case BuyPropertyError.InsufficientFunds :
+            break;
+            case BuyPropertyError.PropertyOwned :
+            break;
+            case BuyPropertyError.Succes :
+            Console.WriteLine("Property successfully purchased!");
+            break;
         }
-        else
-        {
-            Console.WriteLine("Failed to purchase property");
-        }
-        Console.ReadKey();
     }
 
     private void BuyHouse()
