@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using log4net;
+using log4net.Config;
 
 
 namespace monopoly
@@ -14,9 +16,14 @@ namespace monopoly
         private Dictionary<Player, int> _playerMoney;
         private Dictionary<Player, List<Property>> _playerProperties;
         private Dictionary<Player, bool> _jailStatus;
+        private Dictionary<Player, int> _jailTurns;
+        private List<Card> _chanceCards;
+        private List<Card> _communityChestCards;
         private int _currentPlayer;
         private bool _gameStatus;
         public event Action<Player> GoToJailEvent;
+        public event Action<int> TaxNotificationEvent;
+        private static readonly ILog log = LogManager.GetLogger(typeof(GameController));
 
         public GameController(IBoard board)
         {
@@ -30,23 +37,29 @@ namespace monopoly
             _currentPlayer = 0;
             _gameStatus = false;
             _jailStatus = new Dictionary<Player, bool>();
+            _jailTurns = new Dictionary<Player, int>();
+            _chanceCards = new List<Card>();
+            _communityChestCards = new List<Card>();
+            XmlConfigurator.Configure(new FileInfo("log4net.config"));
         }
 
         public bool AddPlayer(string name)
         {
-
             Player player = new Player(name);
             _players.Add(player);
-            _playerMoney[player] = 20000; //setmoney
+            _playerMoney[player] = 20000;
             _playerPositions[player] = _board.GetSquare(0);
             _jailStatus[player] = false;
+            _jailTurns[player] = 0;
+            log.Info($"Adding player: {name}");
             return true;
         }
 
         public bool AddDice(int x)
         {
             Dice dice = new Dice(x);
-            _dices.Add(dice);///
+            _dices.Add(dice);
+            log.Info($"Adding dice with {x} sides");
             return true;
         }
 
@@ -59,6 +72,7 @@ namespace monopoly
                 result = dice.Roll();
                 _results.Add(result);
             }
+            log.Info("Rolling the dice");
             return true;
         }
 
@@ -75,6 +89,12 @@ namespace monopoly
         public List<int> GetDiceResults()
         {
             return _results;
+        }
+
+        private bool HasRolledDoubles()
+        {
+            List<int> diceResults = GetDiceResults();
+            return diceResults.Count >= 2 && diceResults[0] == diceResults[1];
         }
         public int GetCurrentPlayerIndex()
         {
@@ -187,6 +207,23 @@ namespace monopoly
             return new List<Property>();
         }
 
+        public int GetPlayerPropertyHouses()
+        {
+            Player activePlayer = GetActivePlayer();
+            int currentPosition = GetPlayerPosition();
+
+            if (activePlayer != null && currentPosition >= 0)
+            {
+                Square currentSquare = _board.GetSquare(currentPosition);
+
+                if (currentSquare is Property property && property.GetOwner() == activePlayer.GetName())
+                {
+                    return property.GetNumberOfHouses();
+                }
+            }
+
+            return 0;
+        }
 
 
         public BuyPropertyError BuyProperty()
@@ -266,7 +303,7 @@ namespace monopoly
         }
 
 
-        public bool BuyHouse()//retunnya enum
+        public bool BuyHouse()
         {
             Player activePlayer = GetActivePlayer();
             int currentPosition = GetPlayerPosition();
@@ -369,6 +406,7 @@ namespace monopoly
             {
                 _playerMoney[activePlayer] -= taxAmount;
             }
+            TaxNotificationEvent?.Invoke(taxAmount);
         }
 
         public void HandlePropertyAction(Property property)
@@ -432,9 +470,22 @@ namespace monopoly
             {
                 SetPlayerPosition(jailSquare);
                 _jailStatus[activePlayer] = true;
+                _jailTurns[activePlayer] = 0;
                 GoToJailEvent?.Invoke(activePlayer);
             }
         }
+
+        private void IncrementJailTurns()
+        {
+            foreach (var player in _jailStatus.Keys.ToList())
+            {
+                if (_jailStatus[player])
+                {
+                    _jailTurns[player]++;
+                }
+            }
+        }
+
 
         public bool IsCurrentPlayerBankrupt()
         {
@@ -497,28 +548,145 @@ namespace monopoly
             _gameStatus = status;
         }
 
+        public bool GetOutOfJail()
+        {
+            Player activePlayer = GetActivePlayer();
 
+            if (activePlayer != null && _jailStatus.ContainsKey(activePlayer) && _jailStatus[activePlayer])
+            {
+                List<int> diceResults = GetDiceResults();
 
+                if (diceResults.Count == 2 && diceResults[0] == diceResults[1])
+                {
+                    _jailStatus[activePlayer] = false;
+                    return true;
+                }
+            }
 
+            return false;
+        }
 
+        public bool PayToGetOutOfJail()
+        {
+            Player activePlayer = GetActivePlayer();
 
+            if (activePlayer != null && _jailStatus.ContainsKey(activePlayer) && _jailStatus[activePlayer])
+            {
+                Jail jailSquare = GetJailSquare();
 
+                if (jailSquare != null)
+                {
+                    int bailAmount = jailSquare.GetBailAmount();
 
+                    if (_playerMoney.ContainsKey(activePlayer) && _playerMoney[activePlayer] >= bailAmount)
+                    {
+                        _playerMoney[activePlayer] -= bailAmount;
+                        _jailStatus[activePlayer] = false;
+                        return true;
+                    }
+                }
+            }
 
+            return false;
+        }
 
+        public int GetBailAmount()
+        {
+            Jail jailSquare = GetJailSquare();
+            return jailSquare.GetBailAmount();
 
+        }
 
+        public List<Player> GetJailedPlayers()
+        {
+            List<Player> jailedPlayers = new List<Player>();
 
+            foreach (var player in _jailStatus.Keys)
+            {
+                if (_jailStatus[player])
+                {
+                    jailedPlayers.Add(player);
+                }
+            }
 
+            return jailedPlayers;
+        }
 
+        public void ExecuteCommand(Card card)
+        {
+            Player activePlayer = GetActivePlayer();
+            TypeCardCommand typeCardCommand = card.GetTypeCommand();
+            int valueCard = card.GetValue();
+            switch (typeCardCommand)
+            {
+                case TypeCardCommand.Move:
+                    Move();
+                    break;
+                case TypeCardCommand.PayTax:
+                    _playerMoney[activePlayer] -= valueCard;
+                    break;
+                case TypeCardCommand.ReceiveMoney:
+                    _playerMoney[activePlayer] += valueCard;
+                    break;
+            }
 
+        }
 
+        public void AddCard(Card card)
+        {
+            if (card.GetCardType() == TypeCard.Chance)
+            {
+                _chanceCards.Add(card);
+            }
+            else if (card.GetCardType() == TypeCard.CommunityChest)
+            {
+                _communityChestCards.Add(card);
+            }
+        }
 
+        public Card GetRandomChanceCard()
+        {
+            Random random = new Random();
+            int index = random.Next(_chanceCards.Count);
+            Card randomCard = _chanceCards[index];
+            return randomCard;
+        }
 
+        public Card GetRandomCommunityChestCard()
+        {
+            Random random = new Random();
+            int index = random.Next(_communityChestCards.Count);
+            Card randomCard = _communityChestCards[index];
+            return randomCard;
+        }
 
+        public void ShuffleChanceCards()
+        {
+            Random random = new Random();
+            int n = _chanceCards.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                Card temp = _chanceCards[k];
+                _chanceCards[k] = _chanceCards[n];
+                _chanceCards[n] = temp;
+            }
+        }
 
-
-
+        public void ShuffleCommunityChestCards()
+        {
+            Random random = new Random();
+            int n = _communityChestCards.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                Card temp = _communityChestCards[k];
+                _communityChestCards[k] = _communityChestCards[n];
+                _communityChestCards[n] = temp;
+            }
+        }
 
 
 

@@ -1,0 +1,46 @@
+2023-06-24 20:24:10,227 [1] INFO  monopoly.Program - Aplikasi dimulai
+2023-06-24 20:31:17,097 [1] INFO  monopoly.Program - Aplikasi dimulai
+2023-06-24 20:31:17,167 [1] INFO  monopoly.GameController - GetActivePlayer: No active player
+2023-06-24 20:31:17,169 [1] INFO  monopoly.GameController - Adding dice with 6 sides
+2023-06-24 20:31:17,169 [1] INFO  monopoly.GameController - Adding dice with 6 sides
+2023-06-24 20:31:36,795 [1] INFO  monopoly.GameController - Adding player: teguh
+2023-06-24 20:31:38,792 [1] INFO  monopoly.GameController - Adding player: yuli
+2023-06-24 20:31:38,794 [1] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:39,724 [1] INFO  monopoly.GameController - Rolling the dice
+2023-06-24 20:31:43,766 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:43,778 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:43,780 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:43,782 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:43,783 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:43,785 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:44,907 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:44,907 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:44,907 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:46,704 [5] INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:31:48,474 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:31:49,543 [5] INFO  monopoly.GameController - Rolling the dice
+2023-06-24 20:31:53,556 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:31:53,560 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:31:53,561 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:31:53,561 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:31:53,561 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:31:53,562 [5] INFO  monopoly.GameController - GetActivePlayer: yuli
+2023-06-24 20:44:54,866 INFO  monopoly.Program - Aplikasi dimulai
+2023-06-24 20:44:54,898 INFO  monopoly.GameController - GetActivePlayer: No active player
+2023-06-24 20:44:54,899 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-06-24 20:44:54,899 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-06-24 20:45:01,366 INFO  monopoly.GameController - Adding player: teguh
+2023-06-24 20:45:01,367 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:45:02,429 INFO  monopoly.GameController - Rolling the dice
+2023-06-24 20:45:06,452 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:45:06,455 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:45:06,456 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:45:06,457 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:45:06,458 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:45:12,369 INFO  monopoly.GameController - GetActivePlayer: teguh
+2023-06-24 20:46:09,932 INFO  monopoly.Program - Aplikasi dimulai
+2023-06-24 20:46:09,973 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-06-24 20:46:09,973 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-06-24 20:46:13,318 INFO  monopoly.GameController - Adding player: teguh
+2023-06-24 20:46:15,551 INFO  monopoly.GameController - Adding player: yuli
+2023-06-24 20:46:16,414 INFO  monopoly.GameController - Rolling the dice

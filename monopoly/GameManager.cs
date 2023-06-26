@@ -1,3 +1,5 @@
+using log4net;
+using log4net.Config;
 
 
 namespace monopoly;
@@ -26,8 +28,8 @@ public class Game
         board.AddSquare(new Property(2, "Bandung", "Description 2", 300, 50, 30, 20, TypeProperty.Residential));
         board.AddSquare(new Property(3, "Semarang", "Description 3", 300, 50, 30, 20, TypeProperty.Residential));
         board.AddSquare(new Property(4, "jakarta", "Description 4", 300, 50, 30, 20, TypeProperty.Train));
-        board.AddSquare(new Property(5, "Malang", "Description 5", 300, 50, 30, 20, TypeProperty.Residential));
-        board.AddSquare(new Property(6, "Purworejo", "Description 6", 300, 50, 30, 20, TypeProperty.Residential));
+        board.AddSquare(new GoToJail(5, "GoToJail", "Description"));
+        board.AddSquare(new GoToJail(6, "GoToJail", "Description"));
         board.AddSquare(new Tax(7, "Tax 1", "kamu harus membayar: Rp.100", 100));
         board.AddSquare(new Property(8, "Yogyakarta", "Description 6", 300, 50, 30, 20, TypeProperty.Residential));
         board.AddSquare(new Property(9, "Bekasi", "Description 6", 300, 50, 30, 20, TypeProperty.Residential));
@@ -69,6 +71,8 @@ public class Game
     public async Task StartGame()
     {
         Console.Clear();
+        gameController.GoToJailEvent += HandleGoToJailEvent;
+        gameController.TaxNotificationEvent += HandleTaxNotification;
         Console.WriteLine("=================WELCOME TO MOOPOLY GAME=======================");
         Console.Write("Enter the number of players: ");
 
@@ -102,13 +106,12 @@ public class Game
             }
         }
 
-        Console.WriteLine("Active Player : " + gameController.GetPlayerMoney());
-
         Console.WriteLine("Press enter to start the game");
-        menuOptions = GetMenuOptions();
+
         Console.Clear();
         while (gameController.GetGameStatus() != true)
         {
+
             Player activePlayer = gameController.GetActivePlayer();
             Console.WriteLine("Player's Turn: " + activePlayer.GetName());
             Console.WriteLine("Press enter to Roll the Dice");
@@ -147,15 +150,91 @@ public class Game
             Console.Clear();
             Console.WriteLine("your position :" + gameController.GetPlayerPosition());
             Console.WriteLine("name : " + gameController.GetSquareName());
+            turnEnd = false;
             Console.ReadKey();
 
             while (!turnEnd)
             {
-
-                ShowMenuOptions();
-
                 int selectedOption = 0;
                 bool isValidOption = false;
+
+                if (gameController.GetJailedPlayers().Contains(activePlayer))
+                {
+                    Console.WriteLine("You are in jail. You have 3 turns to get out.");
+                    Console.WriteLine("Do you want to:");
+                    Console.WriteLine("1. Pay to get out of jail");
+                    Console.WriteLine("2. Roll the dice again");
+
+                    while (!isValidOption)
+                    {
+                        Console.Write("Select an option: ");
+                        if (int.TryParse(Console.ReadLine(), out selectedOption))
+                        {
+                            isValidOption = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Please enter a valid option number.");
+                        }
+                    }
+                    switch (selectedOption)
+                    {
+                        case 1:
+                            if (gameController.PayToGetOutOfJail())
+                            {
+                                Console.WriteLine("You paid to get out of jail.");
+                                gameController.Move();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You don't have enough money to pay and remain in jail.");
+                                turnEnd = true;
+                                gameController.NextTurn();
+                            }
+                            break;
+                        case 2:
+                            int failedAttempts = 0;
+
+                            for (int i = 0; i < 3; i++)
+                            {
+                                Console.WriteLine("Turn {0} in jail.", i + 1);
+
+                                Console.WriteLine("Press enter to Roll the Dice");
+                                Console.ReadKey();
+                                gameController.Roll();
+                                Console.WriteLine("Dice 1: {0}", diceResults[0]);
+                                await Task.Delay(2000);
+                                Console.WriteLine("Dice 2: {0}", diceResults[1]);
+                                await Task.Delay(2000);
+                                Console.ReadKey();
+
+                                if (gameController.GetOutOfJail())
+                                {
+                                    Console.WriteLine("Congratulations! You rolled doubles and got out of jail.");
+                                    gameController.Move();
+                                    break;
+                                }
+                                else
+                                {
+                                    failedAttempts++;
+                                    if (failedAttempts == 3)
+                                    {
+                                        Console.WriteLine("You failed to roll doubles for 3 turns. You remain in jail.");
+                                        turnEnd = true;
+                                        gameController.NextTurn();
+                                    }
+                                }
+                            }
+
+                            break;
+                    }
+
+
+
+                }
+                menuOptions = GetMenuOptions();
+                ShowMenuOptions();
+
                 while (!isValidOption)
                 {
                     Console.Write("Select an option: ");
@@ -178,25 +257,41 @@ public class Game
     }
     private List<MenuOption> GetMenuOptions()
     {
-        List<MenuOption> menuOptions = new List<MenuOption>
+        List<Property> playerProperties = gameController.GetPlayerProperties();
+
+        menuOptions = new List<MenuOption>
+    {
+        new MenuOption { Title = "Finish Turn", Action = FinishTurn },
+        new MenuOption { Title = "Your Dashboard", Action = ShowDashboard },
+        new MenuOption { Title = "Purchase Property", Action = PurchaseProperty }
+    };
+
+        if (playerProperties.Count > 0)
         {
-            new MenuOption { Title = "Finish Turn", Action = FinishTurn },
-            new MenuOption { Title = "Your DashBoard", Action = ShowDashboard },
-            new MenuOption { Title = "Purchase the Property", Action = PurchaseProperty },
-            new MenuOption { Title = "Quit Game", Action = QuitGame }
-        };
+            menuOptions.Add(new MenuOption { Title = "Sell Property", Action = SellProperty });
+            menuOptions.Add(new MenuOption { Title = "Buy House", Action = BuyHouse });
+            menuOptions.Add(new MenuOption { Title = "Buy Hotel", Action = BuyHotel });
+        }
+
+        menuOptions.Add(new MenuOption { Title = "Quit Game", Action = QuitGame });
+
         return menuOptions;
     }
+
 
     private void ShowMenuOptions()
     {
         Console.WriteLine("\n===== MENU OPTIONS =====");
         for (int i = 0; i < menuOptions.Count; i++)
         {
-            Console.WriteLine("{0}. {1}", i + 1, menuOptions[i].Title);
+            if (!gameController.GetJailedPlayers().Contains(activePlayer) || i == 0)
+            {
+                Console.WriteLine("{0}. {1}", i + 1, menuOptions[i].Title);
+            }
         }
         Console.WriteLine("========================\n");
     }
+
 
 
     private void FinishTurn()
@@ -218,6 +313,7 @@ public class Game
             {
 
                 Console.WriteLine($"- {property.GetName()}");
+                Console.WriteLine("Total Houses: " + gameController.GetPlayerPropertyHouses());
 
             }
         }
@@ -225,21 +321,26 @@ public class Game
         {
             Console.WriteLine("You don't have any properties.");
         }
-    Console.ReadKey();
+        Console.ReadKey();
     }
 
     private void PurchaseProperty()
     {
         BuyPropertyError error = gameController.BuyProperty();
-        switch(error)
+        switch (error)
         {
-            case BuyPropertyError.InsufficientFunds :
-            break;
-            case BuyPropertyError.PropertyOwned :
-            break;
-            case BuyPropertyError.Succes :
-            Console.WriteLine("Property successfully purchased!");
-            break;
+            case BuyPropertyError.InsufficientFunds:
+                Console.WriteLine("Sorry, the property is already owned by another player.");
+                break;
+            case BuyPropertyError.PropertyOwned:
+                Console.WriteLine("Property purchase successful!");
+                break;
+            case BuyPropertyError.Succes:
+                Console.WriteLine("Property successfully purchased!");
+                break;
+            default:
+                Console.WriteLine("An error occurred while purchasing the property.");
+                break;
         }
     }
 
@@ -259,9 +360,9 @@ public class Game
     private void BuyHotel()
     {
         bool buyHotel = gameController.BuyHotel();
-        if(buyHotel)
+        if (buyHotel)
         {
-             Console.WriteLine("Hotel successfully purchased");
+            Console.WriteLine("Hotel successfully purchased");
 
         }
         else
@@ -276,11 +377,11 @@ public class Game
 
         if (sellProperty)
         {
-             Console.WriteLine("successful sale of property");
+            Console.WriteLine("successful sale of property");
         }
         else
         {
-             Console.WriteLine("failed sale of property");
+            Console.WriteLine("failed sale of property");
         }
     }
 
@@ -289,14 +390,27 @@ public class Game
     {
         gameController.SetGameStatus(true);
     }
+    private void HandleGoToJailEvent(Player player)
+    {
+        Console.WriteLine($"{player.GetName()} has been sent to jail.");
+    }
+
+    private void HandleTaxNotification(int taxAmount)
+    {
+        Console.WriteLine("You have to pay a tax of Rp." + taxAmount);
+    }
 }
 
 class Program
 {
+    private static readonly ILog log = LogManager.GetLogger(typeof(Program));
     static void Main(string[] args)
     {
+        XmlConfigurator.Configure(new FileInfo("log4net.config"));
+        log.Info("Aplikasi dimulai");
         Game game = new Game();
         game.StartGame().Wait();
+        log.Info("Aplikasi selesai");
         Console.ReadLine();
     }
 

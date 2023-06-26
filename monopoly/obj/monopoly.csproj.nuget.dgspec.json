@@ -1,30 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {}
+    "C:\\Users\\ASUS\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {
+    "C:\\Users\\ASUS\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
         "projectName": "monopoly",
-        "projectPath": "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
-        "packagesPath": "C:\\Users\\Batch 2\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Batch 2\\Pictures\\Monopoly4\\monopoly\\obj\\",
+        "projectPath": "C:\\Users\\ASUS\\Pictures\\Monopoly4\\monopoly\\monopoly.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Pictures\\Monopoly4\\monopoly\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Batch 2\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -42,13 +37,20 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "log4net": {
+              "target": "Package",
+              "version": "[2.0.15, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -57,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100-preview.4.22252.9\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
