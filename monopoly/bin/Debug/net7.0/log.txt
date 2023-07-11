@@ -238,3 +238,26 @@
 2023-06-25 19:46:44,739 INFO  monopoly.GameController - Adding player: teguh
 2023-06-25 19:46:47,096 INFO  monopoly.GameController - Adding player: yuli
 2023-06-25 19:47:43,580 INFO  monopoly.GameController - Rolling the dice
+2023-07-11 09:46:15,949 INFO  monopoly.Program - Aplikasi dimulai
+2023-07-11 09:46:15,987 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-07-11 09:46:15,987 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-07-11 09:54:14,842 INFO  monopoly.Program - Aplikasi dimulai
+2023-07-11 09:54:14,877 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-07-11 09:54:14,878 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-07-11 09:54:20,961 INFO  monopoly.GameController - Adding player: o
+2023-07-11 09:54:21,527 INFO  monopoly.GameController - Adding player: p
+2023-07-11 09:54:21,529 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:22,147 INFO  monopoly.GameController - Rolling the dice
+2023-07-11 09:54:26,170 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:26,172 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:26,174 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:26,175 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:26,177 INFO  monopoly.GameController - Player moved to square: Tax 1
+2023-07-11 09:54:26,177 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:26,182 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:27,498 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:27,498 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 09:54:27,498 INFO  monopoly.GameController - GetActivePlayer: o
+2023-07-11 10:00:30,325 INFO  monopoly.Program - Aplikasi dimulai
+2023-07-11 10:00:30,363 INFO  monopoly.GameController - Adding dice with 6 sides
+2023-07-11 10:00:30,364 INFO  monopoly.GameController - Adding dice with 6 sides

@@ -115,6 +115,7 @@ namespace monopoly
             {
                 int currentPlayerIndex = GetCurrentPlayerIndex();
                 Player activePlayer = _players[currentPlayerIndex];
+                log.Info($"GetActivePlayer: {activePlayer?.GetName() ?? "No active player"}");
                 return activePlayer;
             }
             return null;
@@ -165,6 +166,7 @@ namespace monopoly
                 Square newSquare = _board.GetSquare(newPosition);
                 SetPlayerPosition(newSquare);
                 HandleSquareAction(newSquare);
+                 log.Info($"Player moved to square: {newSquare.GetName()}");
                 HandleBankruptPlayer(GetActivePlayer());
             }
         }
@@ -177,6 +179,8 @@ namespace monopoly
             if (activePlayer != null && currentPosition >= 0)
             {
                 Square currentSquare = _board.GetSquare(currentPosition);
+                 string squareName = currentSquare.GetName();
+                 log.Info($"Current square name: {squareName}"); 
                 return currentSquare.GetName();
             }
 
