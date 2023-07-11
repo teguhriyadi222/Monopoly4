@@ -50,5 +50,103 @@ public class UnitTest1
             AssemblyLoadEventArgs.Equals(20000, money);
            
         }
+    [Fact]
+        public void Move_PlayerMovesToNewPosition()
+        {
+        
+            IBoard board = new Board();
+            GameController gameController = new GameController(board);
+            gameController.AddPlayer("Player1");
+            gameController.AddDice(6);
+            gameController.Roll();
+            int currentPosition = gameController.GetPlayerPosition();
+
+          
+            gameController.Move();
+            int newPosition = gameController.GetPlayerPosition();
+
+            
+            Assert.NotEqual(currentPosition, newPosition);
+        }
+
+        [Fact]
+        public void BuyProperty_PropertyOwned_ReturnsPropertyOwnedError()
+        {
+            
+            IBoard board = new Board();
+            GameController gameController = new GameController(board);
+            gameController.AddPlayer("Player1");
+            gameController.AddPlayer("Player2");
+            gameController.AddDice(6);
+            gameController.Roll();
+            gameController.Move();
+            gameController.NextTurn();
+            gameController.Roll();
+            gameController.Move();
+            int currentPosition = gameController.GetPlayerPosition();
+
+            
+            BuyPropertyError result = gameController.BuyProperty();
+
+           
+            Assert.Equal(BuyPropertyError.PropertyOwned, result);
+        }
+
+        [Fact]
+        public void SellProperty_PropertyOwnedAndValid_ReturnsTrue()
+        {
+           
+            IBoard board = new Board();
+            GameController gameController = new GameController(board);
+            gameController.AddPlayer("Player1");
+            gameController.AddDice(6);
+            gameController.Roll();
+            gameController.Move();
+            int currentPosition = gameController.GetPlayerPosition();
+            gameController.BuyProperty();
+
+           
+            bool result = gameController.SellProperty();
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void BuyHouse_PropertyOwnedAndValid_ReturnsTrue()
+        {
+       
+            IBoard board = new Board();
+            GameController gameController = new GameController(board);
+            gameController.AddPlayer("Player1");
+            gameController.AddDice(6);
+            gameController.Roll();
+            gameController.Move();
+            int currentPosition = gameController.GetPlayerPosition();
+            gameController.BuyProperty();
+
+           
+            bool result = gameController.BuyHouse();
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void BuyHotel_PropertyOwnedAndValid_ReturnsTrue()
+        {
+
+            IBoard board = new Board();
+            GameController gameController = new GameController(board);
+            gameController.AddPlayer("Player1");
+            gameController.AddDice(6);
+            gameController.Roll();
+            gameController.Move();
+            int currentPosition = gameController.GetPlayerPosition();
+            gameController.BuyProperty();
+
+
+            bool result = gameController.BuyHotel();
+
+            Assert.True(result);
+        }
         
 }
